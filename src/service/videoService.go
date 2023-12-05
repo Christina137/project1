@@ -22,7 +22,7 @@ func ExampleReadFrameAsJpeg(inFileName string, frameNum int) (io.Reader, int64) 
 	err := ffmpeg.Input(inFileName).
 		Filter("select", ffmpeg.Args{fmt.Sprintf("gte(n,%d)", frameNum)}).
 		Output("pipe:", ffmpeg.KwArgs{"vframes": 1, "format": "image2", "vcodec": "mjpeg"}).
-		WithOutput(buf, os.Stdout).
+		WithOutput(buf). //, os.Stdout DOn't want to show command line in console
 		Run()
 	if err != nil {
 		panic(err)
