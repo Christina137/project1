@@ -56,7 +56,7 @@ func JwtMiddleware() gin.HandlerFunc {
 			tokenStr = c.Query("token")
 		}
 
-		log.Println("token: ", tokenStr)
+		// log.Println("token: ", tokenStr)
 
 		if tokenStr == "" {
 			c.JSON(http.StatusOK, common.Response{StatusCode: 401, StatusMsg: "用户不存在"})
