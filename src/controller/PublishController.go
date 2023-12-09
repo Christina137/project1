@@ -42,14 +42,12 @@ type VideoListResponse struct {
 	VideoList []ReturnVideo `json:"video_list"`
 }
 
-func Publish(c *gin.Context) { //上传视频方法
-	//1.中间件验证token后，获取userId
+func Publish(c *gin.Context) { 
 	getUserId, _ := c.Get("user_id")
 	var userId uint
 	if v, ok := getUserId.(uint); ok {
 		userId = v
 	}
-	//2.接收请求参数信息
 	title := c.PostForm("title")
 	data, err := c.FormFile("data")
 	if err != nil {
@@ -59,10 +57,8 @@ func Publish(c *gin.Context) { //上传视频方法
 		})
 		return
 	}
-	//3.返回至前端页面的展示信息
 	fileName := filepath.Base(data.Filename)
 	finalName := fmt.Sprintf("%d_%s", userId, fileName)
-	//先存储到本地文件夹，再保存到云端，获取封面后最后删除
 	saveFile := filepath.Join("./resources/static/video/", finalName)
 	if err := c.SaveUploadedFile(data, saveFile); err != nil {
 		c.JSON(http.StatusOK, common.Response{
@@ -72,11 +68,10 @@ func Publish(c *gin.Context) { //上传视频方法
 		return
 	}
 	coverName := strings.Replace(finalName, ".mp4", ".jpeg", 1)
-	img, coverLen := service.ExampleReadFrameAsJpeg(saveFile, 2) //获取第2帧封面
+	img, coverLen := service.ExampleReadFrameAsJpeg(saveFile, 2) 
 
 	covImg := io.NopCloser(img)
 
-	//4.保存到云端
 	objClient := dao.GetObjectStorageClient()
 
 	//upload cover
@@ -104,7 +99,6 @@ func Publish(c *gin.Context) { //上传视频方法
 		return
 	}
 
-	//5.删除本地文件
 	os.Remove(saveFile)
 	if err != nil {
 		log.Println(err)
@@ -114,7 +108,6 @@ func Publish(c *gin.Context) { //上传视频方法
 		StatusMsg:  finalName + "--uploaded successfully",
 	})
 
-	//4.保存发布信息至数据库,刚开始发布，喜爱和评论默认为0
 	store_video_info := model.Video{
 		Model:         gorm.Model{},
 		AuthorId:      userId,
@@ -129,18 +122,17 @@ func Publish(c *gin.Context) { //上传视频方法
 }
 
 func PublishList(c *gin.Context) {
-	//1.中间件鉴权token
+
 	getHostId, _ := c.Get("user_id")
 	var HostId uint
 	if v, ok := getHostId.(uint); ok {
 		HostId = v
 	}
-	//2.查询要查看用户的id的所有视频，返回页面
+	
 	getGuestId := c.Query("user_id")
 	id, _ := strconv.Atoi(getGuestId)
 	GuestId := uint(id)
 	if GuestId == 0 || GuestId == HostId {
-		//根据token-id查找用户
 		getUser, err := service.GetUser(HostId)
 		if err != nil {
 			c.JSON(http.StatusOK, common.Response{
@@ -157,7 +149,6 @@ func PublishList(c *gin.Context) {
 			FollowCount:   getUser.FollowCount,
 			FollowerCount: getUser.FollowerCount,
 		}
-		//根据用户id查找 所有相关视频信息
 		var videoList []model.Video
 		videoList = service.GetvideoList(HostId)
 		if len(videoList) == 0 {
@@ -168,7 +159,7 @@ func PublishList(c *gin.Context) {
 				},
 				VideoList: nil,
 			})
-		} else { //需要展示的列表信息
+		} else { 
 			var returnVideoList2 []ReturnVideo
 			for i := 0; i < len(videoList); i++ {
 				returnVideo2 := ReturnVideo{
@@ -192,7 +183,7 @@ func PublishList(c *gin.Context) {
 			})
 		}
 	} else {
-		//根据传入id查找用户
+
 		getUser, err := service.GetUser(GuestId)
 		if err != nil {
 			c.JSON(http.StatusOK, common.Response{
@@ -209,7 +200,6 @@ func PublishList(c *gin.Context) {
 			FollowerCount: getUser.FollowerCount,
 			IsFollow:      service.IsFollowing(HostId, GuestId),
 		}
-		//根据用户id查找 所有相关视频信息
 		var videoList []model.Video
 		videoList = service.GetvideoList(GuestId)
 		if len(videoList) == 0 {
@@ -220,7 +210,7 @@ func PublishList(c *gin.Context) {
 				},
 				VideoList: nil,
 			})
-		} else { //需要展示的列表信息
+		} else { 
 			var returnVideoList []ReturnVideo
 			for i := 0; i < len(videoList); i++ {
 				returnVideo := ReturnVideo{
