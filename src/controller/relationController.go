@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-// ReturnFollower 关注表与粉丝表共用的用户数据模型
+
 type ReturnFollower struct {
 	Id            uint   `json:"id"`
 	Name          string `json:"name"`
@@ -19,13 +19,11 @@ type ReturnFollower struct {
 	IsFollow      bool   `json:"is_follow"`
 }
 
-// FollowingListResponse 关注表相应结构体
 type FollowingListResponse struct {
 	common.Response
 	UserList []ReturnFollower `json:"user_list"`
 }
 
-// FollowerListResponse 粉丝表相应结构体
 type FollowerListResponse struct {
 	common.Response
 	UserList []ReturnFollower `json:"user_list"`
