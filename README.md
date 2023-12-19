@@ -1,5 +1,5 @@
 ## project1
-My first web app project \\
+My first web app project \
 To simulate short-form video hosting service
 
 ### ShowVideo:
