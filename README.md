@@ -20,17 +20,7 @@ const Namespace string = "your-namespace"
 const BucketName string = "your-bucket-name"
 const Url string = "your-bucket-url"
 ```
-next, Set up your mysql database information in this **resources/application.yml** file :
-```
-mysql:
-  url: "your-ip"
-  userName: root
-  passWord: "your-password"
-  dbname: "your-dbname"
-  port: 3306
-jwt:
-  secret: "your-secret"
-```
+
 
 #### Acknowledgment：[youthcamp@bytedance.com](https://youthcamp.bytedance.com/)
 
