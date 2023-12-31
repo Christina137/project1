@@ -1,8 +1,8 @@
 mysql:
   url: douyinsdb # local ip     host.docker.internal
   userName: root
-  passWord: "your-password"
-  dbname: "your-dbname"
+  passWord: 123456
+  dbname: douyin
   port: 3306
 
 
