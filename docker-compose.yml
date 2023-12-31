@@ -1,0 +1,28 @@
+services:
+  douyinsdb:
+    container_name: douyinsdb
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: douyin
+      MYSQL_ROOT_PASSWORD: 123456
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u root -p${MYSQL_ROOT_PASSWORD}"]
+      timeout: 10s
+      retries: 10
+      interval: 10s
+      start_period: 10s
+
+  douyin:
+    build:
+      context: .
+    image: douyin:v1.0
+    container_name: douyin
+    ports:
+      - 8090:8090
+    depends_on:
+        douyinsdb:
+          condition: service_healthy
+
+
