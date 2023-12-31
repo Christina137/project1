@@ -1,5 +1,5 @@
 mysql:
-  url: 172.18.0.2 # local ip     host.docker.internal
+  url: douyinsdb # local ip     host.docker.internal
   userName: root
   passWord: "your-password"
   dbname: "your-dbname"
