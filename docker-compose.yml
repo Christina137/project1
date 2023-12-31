@@ -23,6 +23,6 @@ services:
       - 8090:8090
     depends_on:
         douyinsdb:
-          condition: service_healthy
+          condition: service_healthy #wait until DB init success
 
 
