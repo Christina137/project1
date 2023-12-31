@@ -1,6 +1,13 @@
 ## project1
 My first web app project <br>
-To simulate short-form video hosting service
+To simulate short-form video hosting service 
+
+## Technology/Framework:
+- Gin
+- Docker-compose
+- Oracle Cloud Infrastructure Object Storage Service
+- Mysql
+- Jenkins
 
 ### ShowVideo:
 
