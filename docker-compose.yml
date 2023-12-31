@@ -20,7 +20,7 @@ services:
     image: douyin:v1.0
     container_name: douyin
     ports:
-      - 8090:8090
+      - 8080:8080
     depends_on:
         douyinsdb:
           condition: service_healthy #wait until DB init success
